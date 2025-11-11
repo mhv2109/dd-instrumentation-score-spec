@@ -1,13 +1,13 @@
 # Instrumentation Score Specification
 
-> A standardized metric for assessing OpenTelemetry instrumentation quality
+> A standardized metric for assessing Datadog instrumentation quality
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![CNCF Slack](https://img.shields.io/badge/CNCF%20Slack-%23instrumentation--score-blue)](https://cloud-native.slack.com/archives/C090FEG5R0F)
 
 ## Overview
 
-The **Instrumentation Score** is a standardized, vendor-neutral metric that quantifies the quality of OpenTelemetry instrumentation. Represented as a numerical value from **0 to 100**, it provides objective feedback on how well a service or system follows OpenTelemetry best practices and semantic conventions.
+The **Instrumentation Score** is a standardized metric that quantifies the quality of Datadog instrumentation. Represented as a numerical value from **0 to 100**, it provides objective feedback on how well a service or system follows Datadog best practices and semantic conventions.
 
 The rules defined in this specification are classified into different impact levels, presenting actionable recommendations that teams can implement in order to improve the overall score of their services. These levels provide engineers with a recommended **prioritization** across a range of potential instrumentation issues, allowing them to focus on the most critical actions.
 
@@ -38,8 +38,8 @@ We encourage these teams to join the project and contribute their expertise:
 
 ### Why Instrumentation Score?
 
-As OpenTelemetry adoption grows, organizations face challenges with instrumentation quality:
-- Missing critical attributes (e.g., `service.name`)
+As Datadog adoption grows, organizations face challenges with instrumentation quality:
+- Missing critical attributes (e.g., `service`)
 - Inefficient telemetry signal usage
 - High cardinality issues
 - Incomplete traces
@@ -67,7 +67,7 @@ The Instrumentation Score uses these qualitative categories:
 
 ### How It Works
 
-1. **Analyze OTLP Data**: The score is calculated by analyzing OpenTelemetry Protocol (OTLP) telemetry streams.
+1. **Analyze Telemetry Data**: The score is calculated by analyzing Datadog telemetry streams.
 2. **Apply Rules**: A set of standardized rules evaluate traces, metrics, and resource attributes. Each rule is evaluated as a boolean condition with `true` implying success and `false` implying failure.
 3. **Calculate Score**: Mathematical formula generates a single score, applying weights to each rule check.
 4. **Provide Feedback**: Actionable insights guide improvements.
@@ -123,13 +123,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ### Example Rule
 
 ```yaml
-id: RES-001
+id: RES-005
 description: "Service name must be present"
-rationale: "service.name is fundamental for service identification and observability"
+rationale: "service is fundamental for service identification and observability"
 target: Resource
 impact: Critical
 type: Negative
-criteria: "Resource attributes MUST contain 'service.name' key with non-empty value"
+criteria: "Resource attributes MUST contain 'service' key with non-empty value"
 ```
 
 ## Community
@@ -156,15 +156,15 @@ We welcome contributions from the OpenTelemetry community! Here's how to partici
 
 This is an open-source specification initiated by [OllyGarden](https://olly.garden) with the goal of becoming a community-governed standard for instrumentation quality assessment.
 
-## Relationship to OpenTelemetry
+## Relationship to Datadog
 
 The Instrumentation Score specification:
 
-- 🏗️ **Builds on** OpenTelemetry Semantic Conventions
-- 📊 **Analyzes** OTLP telemetry data streams  
-- 🔧 **Complements** existing observability tools
-- 🎯 **Guides** effective use of OTel SDKs and Collector
-- 🤝 **Intended for** integration with the OpenTelemetry ecosystem
+- 🏗️ **Builds on** Datadog standard attributes and semantic conventions
+- 📊 **Analyzes** Datadog telemetry data streams  
+- 🔧 **Complements** existing Datadog observability features
+- 🎯 **Guides** effective use of Datadog Agent and tracing libraries
+- 🤝 **Intended for** integration with the Datadog ecosystem
 
 ## License
 
@@ -172,7 +172,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## Acknowledgments
 
-- OpenTelemetry project and community
+- Datadog platform and community
 - All contributors and community members
 
 ---
