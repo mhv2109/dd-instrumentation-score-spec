@@ -127,9 +127,9 @@ Each rule must include:
 
 Use clear, descriptive commit messages:
 ```
-feat: add rule for missing `service.version` attribute
+feat: add rule for missing `version` attribute
 
-- Defines RES-002 rule for service.version presence
+- Defines RES-XXX rule for version presence
 - Categorized as "Important" impact
 - Includes rationale and implementation criteria
 ```

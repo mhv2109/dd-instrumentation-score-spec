@@ -1,8 +1,8 @@
 # **Introduction**
 
-The OpenTelemetry project provides a powerful, vendor-neutral framework for instrumenting, generating, collecting, and exporting telemetry data (traces, metrics, logs). However, as adoption grows, organizations often face challenges with the *quality* and *consistency* of their instrumentation. Issues like missing critical attributes (e.g., `service.name`), inefficient use of telemetry signals (e.g., using verbose logs where metrics suffice), high cardinality, or incomplete traces can hinder observability effectiveness, increase costs, and make troubleshooting difficult. Currently, the OpenTelemetry ecosystem lacks a standardized, transparent, and objective method for assessing the quality of this instrumentation.
+Datadog provides a powerful observability platform for instrumenting, generating, collecting, and exporting telemetry data (traces, metrics, logs). However, as adoption grows, organizations often face challenges with the *quality* and *consistency* of their instrumentation. Issues like missing critical attributes (e.g., `service`), inefficient use of telemetry signals (e.g., using verbose logs where metrics suffice), high cardinality, or incomplete traces can hinder observability effectiveness, increase costs, and make troubleshooting difficult. Currently, the Datadog ecosystem lacks a standardized, transparent, and objective method for assessing the quality of this instrumentation.
 
-To address this gap, this document proposes a specification for a standardized **Instrumentation Score**. This score, represented as a numerical value ranging from **0 to 100**, aims to provide a quantifiable measure of how well a service or system is instrumented according to OpenTelemetry best practices and semantic conventions. It is calculated by analyzing OpenTelemetry Protocol (OTLP) data streams against a defined set of rules.
+To address this gap, this document proposes a specification for a standardized **Instrumentation Score**. This score, represented as a numerical value ranging from **0 to 100**, aims to provide a quantifiable measure of how well a service or system is instrumented according to Datadog best practices and semantic conventions. It is calculated by analyzing Datadog telemetry data streams against a defined set of rules.
 
 The introduction of such a standard score offers several significant benefits:
 
@@ -31,11 +31,11 @@ This specification is designed for technical stakeholders involved in implementi
 
 ### **Community Contributors**
 
-- **OpenTelemetry Contributors**: Community members interested in extending or refining the scoring methodology
+- **Datadog Community Contributors**: Community members interested in extending or refining the scoring methodology
 - **Observability Engineers**: Practitioners with real-world experience who can contribute insights about effective instrumentation patterns
 - **Standards Enthusiasts**: Technical professionals interested in contributing to open observability standards
 
-This specification assumes familiarity with OpenTelemetry concepts, OTLP data formats, and observability engineering practices.
+This specification assumes familiarity with Datadog concepts, telemetry data formats, and observability engineering practices.
 
 ## **Learning from Prior Art in Scoring**
 
@@ -71,17 +71,17 @@ It is explicitly **not** the goal of this specification to:
 
 ### **Overview**
 
-The Instrumentation Score is a numerical value between 0 (Poor) and 100 (Excellent). It assesses the quality of instrumentation based on the automated analysis of OTLP telemetry data streams, primarily focusing on Traces and associated Resource attributes in its initial conception, with potential future expansion to Metrics and Logs. The score is typically calculated per `service.name`, representing the quality over a defined sliding time window (defaulting to 30 days). Implementations may support aggregation to higher levels (e.g., organization-wide), potentially applying additional rules at that level. The calculation relies on applying a defined set of Rules to the observed telemetry. Implementations MUST NOT include other rules to the instrumentation score that don't belong to the specification: the instrumentation score obtained by a service using a specific implementation must yield the same instrumentation score when using a different implementation. If an implementation doesn't implement all rules, they MUST provide information to their users that the instrumentation score might not be complete.
+The Instrumentation Score is a numerical value between 0 (Poor) and 100 (Excellent). It assesses the quality of instrumentation based on the automated analysis of Datadog telemetry data streams, primarily focusing on Traces and associated Resource attributes in its initial conception, with potential future expansion to Metrics and Logs. The score is typically calculated per `service`, representing the quality over a defined sliding time window (defaulting to 30 days). Implementations may support aggregation to higher levels (e.g., organization-wide), potentially applying additional rules at that level. The calculation relies on applying a defined set of Rules to the observed telemetry. Implementations MUST NOT include other rules to the instrumentation score that don't belong to the specification: the instrumentation score obtained by a service using a specific implementation must yield the same instrumentation score when using a different implementation. If an implementation doesn't implement all rules, they MUST provide information to their users that the instrumentation score might not be complete.
 
 ### **Rules**
 
-The scoring mechanism is driven by rules derived primarily from OpenTelemetry Semantic Conventions and community-accepted best practices. Each rule must be clearly defined with the following attributes:
+The scoring mechanism is driven by rules derived primarily from Datadog standard attributes and semantic conventions, and community-accepted best practices. Each rule must be clearly defined with the following attributes:
 
 * _ID_: A unique, stable identifier (e.g., RES-001).
 * _Description_: A human-readable explanation.
 * _Rationale_: Justification for the rule's importance to quality.
 * _Criteria_: Boolean condition that evaluates as `true` for success or `false` for failure. Multiple sub-conditions may be used, in which case the overall result is an `AND` operation on all conditions.
-* _Target_: The OTLP signal or element it applies to. Must be one of: `Resource`, `TraceSpan`, `Metric`, `Log`.
+* _Target_: The telemetry signal or element it applies to. Must be one of: `Resource`, `TraceSpan`, `Metric`, `Log`.
 * _Impact_: An assigned importance level influencing score impact. Must be one of: `Critical`, `Important`, `Normal`, `Low`.
 
 As explained in the _Score Calculation Formula_ section below, each of these impact levels has an associated **weight**, which increases the associated rule's importance in the resulting score:
@@ -140,10 +140,10 @@ These ranges provide clear signals for action, with "Excellent" being a distinct
 
 ### **Initial Rule Set Considerations**
 
-The initial set of official rules should prioritize high-impact, widely applicable checks, primarily based on stable OpenTelemetry Semantic Conventions and focusing on foundational elements like Traces and Resource attributes. A comprehensive rule set accompanies this repository under the [rules](./rules/) directory, but illustrative examples include:
+The initial set of official rules should prioritize high-impact, widely applicable checks, primarily based on stable Datadog standard attributes and semantic conventions, and focusing on foundational elements like Traces and Resource attributes. A comprehensive rule set accompanies this repository under the [rules](./rules/) directory, but illustrative examples include:
 
-* Missing `service.name` (Critical), missing `service.version` (Important), missing `deployment.environment.name` (Normal), patterns suggesting logs used inefficiently instead of metrics (Normal), high cardinality detected in metric dimensions (Important).  
-* Presence of recommended attributes like `service.instance.id` (Important).
+* Missing `service` (Critical), missing `version` (Important), missing `env` (Normal), patterns suggesting logs used inefficiently instead of metrics (Normal), high cardinality detected in metric dimensions (Important).  
+* Presence of recommended attributes like `host` (Important).
 
 ## **Intended Usage and Benefits**
 
@@ -156,11 +156,11 @@ The Instrumentation Score serves multiple purposes:
 * Creating a **common language** for discussing instrumentation quality.  
 * Serving as a standard metric for **consultants and auditors**.
 
-## **Relationship to the OpenTelemetry Ecosystem**
+## **Relationship to the Datadog Ecosystem**
 
-This specification is deeply intertwined with the OpenTelemetry project:
+This specification is deeply intertwined with the Datadog platform:
 
-* It **leverages** OpenTelemetry Semantic Conventions as the primary source for rule definitions and OTLP as the data format analyzed.  
-* It **informs** users about the effectiveness of their instrumentation choices made using OTel SDKs and configurations within the OTel Collector.  
-* It **complements** existing observability backends and visualization tools by providing a focused metric on instrumentation quality itself.  
-* It is intended for eventual submission to a neutral ground, perhaps as a CNCF project or OpenTelemetry SIG.
+* It **leverages** Datadog standard attributes and semantic conventions as the primary source for rule definitions.  
+* It **informs** users about the effectiveness of their instrumentation choices made using Datadog Agent and tracing libraries.  
+* It **complements** existing Datadog observability features and visualization tools by providing a focused metric on instrumentation quality itself.  
+* It is intended as a standardized framework for assessing instrumentation quality within Datadog environments.
