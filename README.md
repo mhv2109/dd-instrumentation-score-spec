@@ -156,6 +156,8 @@ We welcome contributions from the OpenTelemetry community! Here's how to partici
 
 This is an open-source specification initiated by [OllyGarden](https://olly.garden) with the goal of becoming a community-governed standard for instrumentation quality assessment.
 
+> **Note**: This specification has been adapted from the original OpenTelemetry-based instrumentation score to use Datadog standard attributes and semantic conventions, aligning with Datadog's unified service tagging and data model.
+
 ## Relationship to Datadog
 
 The Instrumentation Score specification:
