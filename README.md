@@ -90,10 +90,11 @@ See the [Specification](./specification.md) for further examples and further det
 
 ## Documentation
 
-📖 **[Full Specification](./specification.md)** - Complete technical specification  
-🔧 **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute to the project  
-🏛️ **[Governance](./GOVERNANCE.md)** - Project governance and maintainers  
-📚 **[Prior Art](./prior-art.md)** - Research on existing scoring systems  
+📖 **[Full Specification](./specification.md)** - Complete technical specification
+🤖 **[LLM Auditor Prompt](./PROMPT.md)** - System prompt for using LLMs to audit codebases against this specification
+🔧 **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute to the project
+🏛️ **[Governance](./GOVERNANCE.md)** - Project governance and maintainers
+📚 **[Prior Art](./prior-art.md)** - Research on existing scoring systems
 📋 **[Rules Directory](./rules/)** - Complete set of scoring rules
 
 ## Implementation
